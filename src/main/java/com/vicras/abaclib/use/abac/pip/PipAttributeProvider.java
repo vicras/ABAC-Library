@@ -1,9 +1,12 @@
 package com.vicras.abaclib.use.abac.pip;
 
+import static com.vicras.abaclib.use.model.Action.ADD_USERS;
 import static com.vicras.abaclib.use.model.Action.CREATE_DOCUMENT;
 import static com.vicras.abaclib.use.model.Action.DELETE_DOCUMENT;
+import static com.vicras.abaclib.use.model.Action.DELETE_USERS;
 import static com.vicras.abaclib.use.model.Action.EDIT_DOCUMENT;
 import static com.vicras.abaclib.use.model.Action.VIEW_DOCUMENT;
+import static com.vicras.abaclib.use.model.Action.VIEW_USERS;
 import static java.util.stream.Collectors.toList;
 
 import com.vicras.abaclib.engine.model.attribute.Attribute;
@@ -24,6 +27,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -40,6 +44,8 @@ public class PipAttributeProvider implements AttributeWithContextProvider {
             DELETE_DOCUMENT,
             VIEW_DOCUMENT);
 
+    private static final Set<Action> USER_ACTIONS = Set.of(VIEW_USERS, DELETE_USERS, ADD_USERS);
+
     @Override
     public <T> Collection<T> getAttributes(Attribute<T> attribute, ExecutionContext context) {
         if (attr.position().equals(attribute)) {
@@ -54,8 +60,20 @@ public class PipAttributeProvider implements AttributeWithContextProvider {
         if (attr.documentActionExist().equals(attribute)) {
             return isDocAction(attr.documentActionExist(), context, attribute.getAttributeClass());
         }
+        if (attr.userActionExist().equals(attribute)) {
+            return isUserAction(attr.documentActionExist(), context, attribute.getAttributeClass());
+        }
 
         return context.getValue(attribute.getAttributeClass());
+    }
+
+    private <T> Collection<T> isUserAction(
+            Attribute<Boolean> documentActionExist,
+            ExecutionContext context,
+            Class<T> attributeClass) {
+        return Stream.of(USER_ACTIONS.containsAll(context.getValue(Action.class)))
+                .map(attributeClass::cast)
+                .collect(toList());
     }
 
     private <T> Collection<T> isDocAction(
@@ -97,7 +115,7 @@ public class PipAttributeProvider implements AttributeWithContextProvider {
     }
 
     private Stream<CommonUser> getCommonUserStream(ExecutionContext context) {
-        return context.getValue(Principal.class).stream()
+        return context.getValue(UsernamePasswordAuthenticationToken.class).stream()
                 .map(Principal::getName)
                 .map(userService::findUserByLogin);
     }

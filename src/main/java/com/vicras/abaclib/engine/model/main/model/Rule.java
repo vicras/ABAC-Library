@@ -1,5 +1,7 @@
 package com.vicras.abaclib.engine.model.main.model;
 
+import static java.util.Collections.emptyList;
+
 import com.vicras.abaclib.engine.model.RuleEffect;
 import com.vicras.abaclib.engine.model.condition.Condition;
 import com.vicras.abaclib.engine.model.condition.Target;
@@ -18,6 +20,6 @@ public class Rule implements BaseModel {
 
     private RuleEffect effect;
 
-    private Collection<Obligation> obligations;
-    private Collection<Advice> advices;
+    private Collection<Obligation> obligations = emptyList();
+    private Collection<Advice> advices = emptyList();
 }

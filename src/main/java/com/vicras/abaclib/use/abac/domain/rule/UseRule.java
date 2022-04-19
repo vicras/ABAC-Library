@@ -46,6 +46,11 @@ public class UseRule {
         return ruleByTarget(exceptCEO);
     }
 
+    public Rule userCeo() {
+        Condition userIsManager = (prov) -> Position.CEO.equals(prov.get(attributes.position()));
+        return ruleByTarget(userIsManager);
+    }
+
     private Rule ruleByTarget(Condition userIsManager) {
         Rule rule = new Rule();
         rule.setTarget(TrueCheck.get());

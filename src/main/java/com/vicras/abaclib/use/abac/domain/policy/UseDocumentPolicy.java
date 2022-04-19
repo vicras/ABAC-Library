@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class UsePolicy {
+public class UseDocumentPolicy {
 
     private final UseAttributes attr;
     private final UseRule rules;
@@ -42,7 +42,7 @@ public class UsePolicy {
         return getPolicy(editDocument, List.of(documentOwner, workTime));
     }
 
-    public Policy documentSelection() {
+    public Policy documentView() {
         Target viewDocument = (prov) -> VIEW_DOCUMENT.equals(prov.get(attr.documentAction()));
 
         var exceptCEO = rules.exceptCEO();

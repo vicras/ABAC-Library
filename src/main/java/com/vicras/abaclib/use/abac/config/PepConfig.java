@@ -1,7 +1,7 @@
 package com.vicras.abaclib.use.abac.config;
 
 import com.vicras.abaclib.engine.pep.strategy.PDPResultConversionPolicy;
-import com.vicras.abaclib.engine.pep.strategy.impl.PermitBasedStrategy;
+import com.vicras.abaclib.engine.pep.strategy.impl.DenyBasedStrategy;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +12,6 @@ public class PepConfig {
 
     @Bean
     public PDPResultConversionPolicy pepResultConversionPolicy() {
-        return new PermitBasedStrategy();
+        return new DenyBasedStrategy();
     }
 }

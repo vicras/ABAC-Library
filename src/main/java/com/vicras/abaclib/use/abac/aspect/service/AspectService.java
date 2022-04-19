@@ -15,12 +15,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Method;
-import java.security.Principal;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.springframework.context.ApplicationContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -58,9 +58,9 @@ public class AspectService {
     }
 
     private ContextInputValue<?>[] createContextInputParams(Object[] args, Method inMethod) {
-        var inPrincipal = (context.getBean(Principal.class));
+        var inAuth = SecurityContextHolder.getContext().getAuthentication();
         var inAction = inMethod.getAnnotation(AbacSecure.class).value();
-        var in = Stream.of(inMethod, inPrincipal, inAction).map(DefaultInputValue::of);
+        var in = Stream.of(inMethod, inAuth, inAction).map(DefaultInputValue::of);
         return Stream.of(
                         in,
                         Arrays.stream(args).map(DefaultInputValue::of)

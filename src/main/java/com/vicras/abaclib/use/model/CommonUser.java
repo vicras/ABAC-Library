@@ -10,11 +10,14 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.util.Collection;
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import org.hibernate.Hibernate;
 
 @Getter
 @Setter
@@ -37,4 +40,22 @@ public class CommonUser extends BaseEntity {
     @ToString.Exclude
     @OneToMany(cascade = ALL, mappedBy = "creator")
     private Collection<Document> documents;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null
+                || Hibernate.getClass(this) != Hibernate.getClass(o)) {
+            return false;
+        }
+        CommonUser that = (CommonUser) o;
+        return getId() != null && Objects.equals(getId(), that.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

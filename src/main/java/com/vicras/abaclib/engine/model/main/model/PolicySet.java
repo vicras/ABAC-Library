@@ -1,5 +1,7 @@
 package com.vicras.abaclib.engine.model.main.model;
 
+import static java.util.Collections.emptyList;
+
 import com.vicras.abaclib.engine.model.combinator.Combinator;
 import com.vicras.abaclib.engine.model.condition.Target;
 import com.vicras.abaclib.engine.model.effect.impl.Advice;
@@ -19,8 +21,8 @@ public class PolicySet implements PolicyModel {
 
     private Combinator<PolicyModel> combinationRule;
 
-    private Collection<Obligation> obligations;
-    private Collection<Advice> advices;
+    private Collection<Obligation> obligations = emptyList();
+    private Collection<Advice> advices = emptyList();
 
     @Override
     public Collection<? extends BaseModel> getChild() {

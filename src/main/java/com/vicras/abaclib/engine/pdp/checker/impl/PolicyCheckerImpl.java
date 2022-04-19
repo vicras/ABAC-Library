@@ -30,6 +30,7 @@ import com.vicras.abaclib.engine.pdp.checker.PolicyChecker;
 import com.vicras.abaclib.engine.pip.PolicyInformationPoint;
 import io.vavr.API;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -37,6 +38,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class PolicyCheckerImpl implements PolicyChecker {
@@ -67,6 +69,7 @@ public class PolicyCheckerImpl implements PolicyChecker {
                 return new RuleResult(rule, NOT_APPLICABLE);
             }
         } catch (AttributeNotFoundException | CalculationException ex) {
+            log.warn("Exception during performing rule", ex);
             return new RuleResult(rule, NOT_DEFINED);
         }
     }

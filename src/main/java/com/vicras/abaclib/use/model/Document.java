@@ -7,10 +7,13 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import org.hibernate.Hibernate;
 
 @Getter
 @Setter
@@ -27,4 +30,22 @@ public class Document extends BaseEntity {
 
     @ManyToOne
     private CommonUser creator;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null
+                || Hibernate.getClass(this) != Hibernate.getClass(o)) {
+            return false;
+        }
+        Document document = (Document) o;
+        return getId() != null && Objects.equals(getId(), document.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

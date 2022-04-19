@@ -6,6 +6,7 @@ public enum Action {
     EDIT_DOCUMENT,
     DELETE_DOCUMENT,
     VIEW_USERS,
-    DELETE_USERS
+    DELETE_USERS,
+    ADD_USERS
 
 }

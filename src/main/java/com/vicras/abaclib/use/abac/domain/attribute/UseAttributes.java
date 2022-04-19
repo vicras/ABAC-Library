@@ -33,6 +33,10 @@ public class UseAttributes {
         return StringAttributeImpl.of("action.document.exist", Boolean.class);
     }
 
+    public Attribute<Boolean> userActionExist() {
+        return StringAttributeImpl.of("action.user.exist", Boolean.class);
+    }
+
     public Attribute<LocalTime> workStartTime() {
         return StringAttributeImpl.of("env.work.time.begin", LocalTime.class);
     }

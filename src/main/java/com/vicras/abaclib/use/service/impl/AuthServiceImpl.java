@@ -1,5 +1,8 @@
 package com.vicras.abaclib.use.service.impl;
 
+import static com.vicras.abaclib.use.model.Action.ADD_USERS;
+
+import com.vicras.abaclib.use.abac.aspect.annotation.AbacSecure;
 import com.vicras.abaclib.use.dto.JWTokenDTO;
 import com.vicras.abaclib.use.dto.LoginDTO;
 import com.vicras.abaclib.use.dto.NewUserDTO;
@@ -28,6 +31,7 @@ public class AuthServiceImpl implements AuthService {
     private final JWTService jwtService;
 
     @Override
+    @AbacSecure(ADD_USERS)
     public UserDTO register(NewUserDTO userDTO) {
         validateUserExist(userDTO.getLogin());
         var user = getNewUser(userDTO);

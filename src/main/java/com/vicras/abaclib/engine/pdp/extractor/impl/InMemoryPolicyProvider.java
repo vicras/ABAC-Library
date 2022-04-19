@@ -14,6 +14,6 @@ public class InMemoryPolicyProvider implements PolicyProvider {
 
     @Override
     public List<PolicyModel> getAllPolicy() {
-        return List.of(set.document());
+        return List.of(set.document(), set.user());
     }
 }

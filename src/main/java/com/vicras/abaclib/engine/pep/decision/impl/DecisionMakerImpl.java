@@ -44,7 +44,7 @@ public class DecisionMakerImpl implements DecisionMaker {
     private boolean withErrorsDuringExecution(
             Collection<? extends Effect> effects,
             Consumer<Try<Void>> errorConsumer) {
-        return Stream.ofAll(effects)
+        return !Stream.ofAll(effects)
                 .map(obligation -> Try.run(() -> obligation.getAction().run()))
                 .filter(Try::isFailure)
                 .peek(errorConsumer)

@@ -10,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.w3c.dom.events.EventException;
 
 
 @Slf4j
@@ -28,7 +27,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(AbacUseException.class)
-    public ResponseEntity<ResponseError> exceptionHandler(EventException exception) {
+    public ResponseEntity<ResponseError> exceptionHandler(AbacUseException exception) {
         log.warn(exception.getMessage(), exception);
         return customExceptionsFactory.handle(exception);
     }
