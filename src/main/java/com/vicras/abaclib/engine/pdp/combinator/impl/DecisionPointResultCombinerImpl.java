@@ -4,14 +4,21 @@ import static com.vicras.abaclib.engine.model.result.CalculationResult.NOT_DEFIN
 import static java.util.stream.Collectors.toList;
 
 import com.vicras.abaclib.engine.model.effect.Effect;
+import com.vicras.abaclib.engine.model.effect.holder.AdviceWithResult;
+import com.vicras.abaclib.engine.model.effect.holder.EffectWithResultModel;
+import com.vicras.abaclib.engine.model.effect.holder.ObligationWithResult;
+import com.vicras.abaclib.engine.model.effect.impl.Advice;
+import com.vicras.abaclib.engine.model.effect.impl.Obligation;
 import com.vicras.abaclib.engine.model.main.BaseModel;
 import com.vicras.abaclib.engine.model.main.PolicyModel;
 import com.vicras.abaclib.engine.model.result.CalculationResult;
 import com.vicras.abaclib.engine.model.result.model.BaseResult;
 import com.vicras.abaclib.engine.model.result.model.PolicyBaseResult;
+import com.vicras.abaclib.engine.model.result.model.ResultModel;
 import com.vicras.abaclib.engine.pdp.combinator.DecisionPointResultCombinator;
 import com.vicras.abaclib.engine.pdp.model.DecisionPointResult;
 import com.vicras.abaclib.engine.pdp.model.impl.BaseDecisionPointResult;
+import com.vicras.abaclib.use.exception.exceptions.internal.InternalException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -43,17 +50,23 @@ public class DecisionPointResultCombinerImpl implements DecisionPointResultCombi
                     : NOT_DEFINED;
         }
 
-        var obligations = bfsCombinationResult(results, finalCalcResult, BaseModel::getObligations);
-        var advices = bfsCombinationResult(results, finalCalcResult, BaseModel::getAdvices);
+        var obligations = castList(bfsCombinationResult(
+                results,
+                finalCalcResult,
+                BaseModel::getObligations), ObligationWithResult.class);
+        var advices = castList(bfsCombinationResult(
+                results,
+                finalCalcResult,
+                BaseModel::getAdvices), AdviceWithResult.class);
         return BaseDecisionPointResult.of(finalCalcResult, advices, obligations, results);
     }
 
-    private <T extends Effect> List<T> bfsCombinationResult(
+    private <T extends Effect> List<EffectWithResultModel> bfsCombinationResult(
             List<PolicyBaseResult<PolicyModel>> results,
             CalculationResult expectedResult,
             Function<BaseModel, Collection<T>> mapper
     ) {
-        var ans = new ArrayList<T>();
+        var ans = new ArrayList<EffectWithResultModel>();
         Queue<BaseResult<?>> nextPolicyQueue = new LinkedList<>(results);
         while (!nextPolicyQueue.isEmpty()) {
             var resultModel = nextPolicyQueue.poll();
@@ -62,11 +75,26 @@ public class DecisionPointResultCombinerImpl implements DecisionPointResultCombi
             if (expectedResult.equals(resultModel.getResult())) {
                 var list = mapper.apply(resultModel.getModel()).stream()
                         .filter(obligation -> obligation.getEffectChecker().check(expectedResult))
+                        .map(effect -> createHolder(effect, resultModel))
                         .collect(toList());
                 ans.addAll(list);
             }
         }
         Collections.reverse(ans);
         return ans;
+    }
+
+    private <T extends Effect> EffectWithResultModel createHolder(T effect, ResultModel model) {
+        if (effect instanceof Obligation) {
+            return ObligationWithResult.of((Obligation) effect, model);
+        }
+        if (effect instanceof Advice) {
+            return AdviceWithResult.of((Advice) effect, model);
+        }
+        throw new InternalException("Don't have opportunities to recognize type");
+    }
+
+    private <T> List<T> castList(List<?> list, Class<T> clazz) {
+        return list.stream().map(clazz::cast).collect(toList());
     }
 }

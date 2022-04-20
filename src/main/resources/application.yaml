@@ -2,16 +2,16 @@ spring:
   application:
     name: ABAC
   flyway:
-#    schemas: abac
+    #    schemas: abac
     enabled: true
   datasource:
     hikari:
-#      schema: abac
+      #      schema: abac
       maximum-pool-size: 3
       idle-timeout: 10000
       connection-timeout: 20000
   jpa:
-    show-sql: true
+    show-sql: false
     hibernate:
       ddl-auto: validate
       order_inserts: true

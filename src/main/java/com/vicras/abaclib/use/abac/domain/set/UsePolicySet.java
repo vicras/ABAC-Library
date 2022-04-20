@@ -2,8 +2,10 @@ package com.vicras.abaclib.use.abac.domain.set;
 
 import com.vicras.abaclib.engine.model.combinator.impl.IfOneAllow;
 import com.vicras.abaclib.engine.model.condition.Target;
+import com.vicras.abaclib.engine.model.effect.impl.Advice;
 import com.vicras.abaclib.engine.model.main.PolicyModel;
 import com.vicras.abaclib.engine.model.main.model.PolicySet;
+import com.vicras.abaclib.use.abac.domain.advice.UseAdviceProvider;
 import com.vicras.abaclib.use.abac.domain.attribute.UseAttributes;
 import com.vicras.abaclib.use.abac.domain.policy.UseDocumentPolicy;
 import com.vicras.abaclib.use.abac.domain.policy.UseUserPolicy;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Component;
 public class UsePolicySet {
 
     private final UseDocumentPolicy useDocumentPolicy;
+    private final UseAdviceProvider adviceProvider;
     private final UseUserPolicy useUserPolicy;
     private final UseAttributes attributes;
 
@@ -29,7 +32,10 @@ public class UsePolicySet {
         List<PolicyModel> policies = List.of(create, delete, edit, view);
         Target docAction = (prov) -> prov.get(attributes.documentActionExist());
 
-        return getPolicy(policies, docAction);
+        return getPolicy(
+                policies,
+                docAction,
+                List.of(adviceProvider.adviceForExecutionSetPolicy()));
     }
 
     public PolicySet user() {
@@ -38,13 +44,20 @@ public class UsePolicySet {
         List<PolicyModel> policies = List.of(adminUserManagementPolicy);
         Target docAction = (prov) -> prov.get(attributes.userActionExist());
 
-        return getPolicy(policies, docAction);
+        return getPolicy(
+                policies,
+                docAction,
+                List.of(adviceProvider.adviceNotForExecutionSetPolicy()));
     }
 
-    private PolicySet getPolicy(List<PolicyModel> policies, Target docAction) {
+    private PolicySet getPolicy(
+            List<PolicyModel> policies,
+            Target docAction,
+            List<Advice> advices) {
         PolicySet policySet = new PolicySet();
         policySet.setTarget(docAction);
         policySet.setPolicies(policies);
+        policySet.setAdvices(advices);
         policySet.setCombinationRule(new IfOneAllow());
         return policySet;
     }

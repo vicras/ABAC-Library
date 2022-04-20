@@ -7,8 +7,10 @@ import static com.vicras.abaclib.use.model.Action.VIEW_DOCUMENT;
 
 import com.vicras.abaclib.engine.model.combinator.impl.AllowIfAllAllows;
 import com.vicras.abaclib.engine.model.condition.Target;
+import com.vicras.abaclib.engine.model.effect.impl.Advice;
 import com.vicras.abaclib.engine.model.main.model.Policy;
 import com.vicras.abaclib.engine.model.main.model.Rule;
+import com.vicras.abaclib.use.abac.domain.advice.UseAdviceProvider;
 import com.vicras.abaclib.use.abac.domain.attribute.UseAttributes;
 import com.vicras.abaclib.use.abac.domain.rule.UseRule;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Component;
 public class UseDocumentPolicy {
 
     private final UseAttributes attr;
+    private final UseAdviceProvider advice;
     private final UseRule rules;
 
     public Policy documentCreation() {
@@ -30,7 +33,10 @@ public class UseDocumentPolicy {
         var managerRule = rules.userManager();
         var workTime = rules.workTime();
 
-        return getPolicy(createDocument, List.of(managerRule, workTime));
+        return getPolicy(
+                createDocument,
+                List.of(managerRule, workTime),
+                List.of(advice.adviceForExecutionPolicy()));
     }
 
     public Policy documentEdition() {
@@ -39,7 +45,10 @@ public class UseDocumentPolicy {
         var documentOwner = rules.onlyDocumentOwner();
         var workTime = rules.workTime();
 
-        return getPolicy(editDocument, List.of(documentOwner, workTime));
+        return getPolicy(
+                editDocument,
+                List.of(documentOwner, workTime),
+                List.of(advice.adviceNotForExecutionPolicy()));
     }
 
     public Policy documentView() {
@@ -48,7 +57,10 @@ public class UseDocumentPolicy {
         var exceptCEO = rules.exceptCEO();
         var workTime = rules.workTime();
 
-        return getPolicy(viewDocument, List.of(exceptCEO, workTime));
+        return getPolicy(
+                viewDocument,
+                List.of(exceptCEO, workTime),
+                List.of(advice.adviceNotForExecutionPolicy()));
     }
 
     public Policy documentDeletion() {
@@ -57,13 +69,17 @@ public class UseDocumentPolicy {
         var documentOwner = rules.onlyDocumentOwner();
         var workTime = rules.workTime();
 
-        return getPolicy(deleteDoc, List.of(documentOwner, workTime));
+        return getPolicy(
+                deleteDoc,
+                List.of(documentOwner, workTime),
+                List.of(advice.adviceNotForExecutionPolicy()));
     }
 
-    public Policy getPolicy(Target editDocument, List<Rule> rules) {
+    public Policy getPolicy(Target editDocument, List<Rule> rules, List<Advice> advice) {
         Policy policy = new Policy();
         policy.setTarget(editDocument);
         policy.setCombinationRule(new AllowIfAllAllows());
+        policy.setAdvices(advice);
         policy.setRules(rules);
         return policy;
     }

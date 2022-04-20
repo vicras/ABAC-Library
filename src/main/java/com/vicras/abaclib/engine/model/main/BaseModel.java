@@ -7,6 +7,10 @@ import com.vicras.abaclib.engine.model.effect.impl.Obligation;
 import java.util.Collection;
 
 public interface BaseModel {
+    String getName();
+
+    String getDescription();
+
     Target getTarget();
 
     Collection<Obligation> getObligations();

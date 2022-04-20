@@ -1,6 +1,6 @@
 package com.vicras.abaclib.engine.pep.decision.impl;
 
-import com.vicras.abaclib.engine.model.effect.Effect;
+import com.vicras.abaclib.engine.model.effect.holder.EffectWithResultModel;
 import com.vicras.abaclib.engine.pdp.model.DecisionPointResult;
 import com.vicras.abaclib.engine.pep.decision.DecisionMaker;
 import com.vicras.abaclib.engine.pep.model.PEPResult;
@@ -42,10 +42,13 @@ public class DecisionMakerImpl implements DecisionMaker {
     }
 
     private boolean withErrorsDuringExecution(
-            Collection<? extends Effect> effects,
+            Collection<? extends EffectWithResultModel> effects,
             Consumer<Try<Void>> errorConsumer) {
         return !Stream.ofAll(effects)
-                .map(obligation -> Try.run(() -> obligation.getAction().run()))
+                .map(obligation -> Try.run(() -> obligation
+                        .getEffect()
+                        .getAction()
+                        .run(obligation.getResultModel())))
                 .filter(Try::isFailure)
                 .peek(errorConsumer)
                 .isEmpty();
