@@ -4,8 +4,8 @@ import com.vicras.abaclib.engine.model.combinator.Combinator;
 
 import java.util.Collection;
 
-public interface PolicyModel extends BaseModel {
-    Combinator<? extends BaseModel> getCombinationRule();
+public interface PolicyModel extends ObjectModel {
+    Combinator<? extends ObjectModel> getCombinationRule();
 
-    Collection<? extends BaseModel> getChild();
+    Collection<? extends ObjectModel> getChild();
 }

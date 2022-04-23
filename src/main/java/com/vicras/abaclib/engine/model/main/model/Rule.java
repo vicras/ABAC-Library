@@ -9,15 +9,15 @@ import com.vicras.abaclib.engine.model.condition.Condition;
 import com.vicras.abaclib.engine.model.condition.Target;
 import com.vicras.abaclib.engine.model.effect.impl.Advice;
 import com.vicras.abaclib.engine.model.effect.impl.Obligation;
-import com.vicras.abaclib.engine.model.main.BaseModel;
+import com.vicras.abaclib.engine.model.main.ObjectModel;
 import lombok.Data;
 
 import java.util.Collection;
 
 @Data
-public class Rule implements BaseModel {
+public class Rule implements ObjectModel {
 
-    private String name = EMPTY;
+    private String title = EMPTY;
     private String description = EMPTY;
 
     private Target target = (nil) -> false;

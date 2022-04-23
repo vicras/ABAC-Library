@@ -6,14 +6,14 @@ import static com.vicras.abaclib.engine.model.result.CalculationResult.NOT_APPLI
 import com.vicras.abaclib.engine.model.combinator.Combinator;
 import com.vicras.abaclib.engine.model.main.PolicyModel;
 import com.vicras.abaclib.engine.model.result.CalculationResult;
-import com.vicras.abaclib.engine.model.result.model.BaseResult;
+import com.vicras.abaclib.engine.model.result.model.ObjectResult;
 
 import java.util.List;
 
-public class IfOneAllow implements Combinator<PolicyModel> {
+public class AllowIfOneAllows implements Combinator<PolicyModel> {
     @Override
-    public CalculationResult combine(List<? extends BaseResult<? extends PolicyModel>> baseResults) {
-        return baseResults.stream().map(BaseResult::getResult).anyMatch(ALLOW::equals)
+    public CalculationResult combine(List<? extends ObjectResult<? extends PolicyModel>> baseResults) {
+        return baseResults.stream().map(ObjectResult::getResult).anyMatch(ALLOW::equals)
                 ? ALLOW
                 : NOT_APPLICABLE;
     }

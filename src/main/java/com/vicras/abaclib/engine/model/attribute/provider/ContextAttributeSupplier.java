@@ -5,6 +5,7 @@ import com.vicras.abaclib.engine.model.context.ExecutionContext;
 
 import java.util.Collection;
 
-public interface AttributeWithContextProvider {
-    <T> Collection<T> getAttributes(Attribute<T> attribute, ExecutionContext context);
+public interface ContextAttributeSupplier {
+    <T> Collection<T> getAttributes(Attribute<T> attribute, ExecutionContext context) throws
+            Exception;
 }

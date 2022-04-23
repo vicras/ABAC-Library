@@ -12,7 +12,8 @@ import java.util.Map;
 
 import org.apache.commons.collections4.ListUtils;
 
-public class ByClassContextIpml implements ExecutionContext {
+public class ByClassContextImpl implements ExecutionContext {
+
     Map<Class<?>, List<Object>> context = new HashMap<>();
 
     public void putValue(Object object) {

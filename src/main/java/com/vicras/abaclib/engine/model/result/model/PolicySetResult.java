@@ -3,26 +3,30 @@ package com.vicras.abaclib.engine.model.result.model;
 import com.vicras.abaclib.engine.model.main.PolicyModel;
 import com.vicras.abaclib.engine.model.main.model.PolicySet;
 import com.vicras.abaclib.engine.model.result.CalculationResult;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.util.Collection;
 import java.util.List;
 
 @Getter
-public class PolicySetResult extends PolicyBaseResult<PolicySet> {
+@ToString
+@EqualsAndHashCode(callSuper = true)
+public class PolicySetResult extends PolicyObjectResult<PolicySet> {
 
-    private final List<PolicyBaseResult<? extends PolicyModel>> policyBaseResult;
+    private final List<PolicyObjectResult<? extends PolicyModel>> policyBaseResult;
 
     public PolicySetResult(
             PolicySet model,
             CalculationResult result,
-            List<PolicyBaseResult<? extends PolicyModel>> policyBaseResult) {
+            List<PolicyObjectResult<? extends PolicyModel>> policyBaseResult) {
         super(model, result);
         this.policyBaseResult = policyBaseResult;
     }
 
     @Override
-    public Collection<PolicyBaseResult<? extends PolicyModel>> getChild() {
+    public Collection<PolicyObjectResult<? extends PolicyModel>> getChild() {
         return policyBaseResult;
     }
 }

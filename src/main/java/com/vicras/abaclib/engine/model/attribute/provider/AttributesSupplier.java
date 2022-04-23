@@ -4,6 +4,6 @@ import com.vicras.abaclib.engine.model.attribute.Attribute;
 
 import java.util.Collection;
 
-public interface AttributesProvider {
-    <T> Collection<T> getAttributes(Attribute<T> attribute);
+public interface AttributesSupplier {
+    <T> Collection<T> getAttributes(Attribute<T> attribute) throws Exception;
 }

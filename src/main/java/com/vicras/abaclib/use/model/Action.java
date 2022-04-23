@@ -8,5 +8,4 @@ public enum Action {
     VIEW_USERS,
     DELETE_USERS,
     ADD_USERS
-
 }

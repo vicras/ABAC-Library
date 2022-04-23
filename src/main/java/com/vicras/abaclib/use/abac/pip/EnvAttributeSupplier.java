@@ -4,7 +4,7 @@ import static java.util.Optional.of;
 import static java.util.stream.Collectors.toList;
 
 import com.vicras.abaclib.engine.model.attribute.Attribute;
-import com.vicras.abaclib.engine.model.attribute.provider.AttributesProvider;
+import com.vicras.abaclib.engine.model.attribute.provider.AttributesSupplier;
 import com.vicras.abaclib.use.abac.domain.attribute.UseAttributes;
 import lombok.RequiredArgsConstructor;
 
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class EnvAttributeProvider implements AttributesProvider {
+public class EnvAttributeSupplier implements AttributesSupplier {
 
     private final UseAttributes attributes;
 

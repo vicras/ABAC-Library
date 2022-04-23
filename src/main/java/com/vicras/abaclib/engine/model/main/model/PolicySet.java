@@ -8,7 +8,7 @@ import com.vicras.abaclib.engine.model.combinator.Combinator;
 import com.vicras.abaclib.engine.model.condition.Target;
 import com.vicras.abaclib.engine.model.effect.impl.Advice;
 import com.vicras.abaclib.engine.model.effect.impl.Obligation;
-import com.vicras.abaclib.engine.model.main.BaseModel;
+import com.vicras.abaclib.engine.model.main.ObjectModel;
 import com.vicras.abaclib.engine.model.main.PolicyModel;
 import lombok.Data;
 
@@ -17,7 +17,7 @@ import java.util.Collection;
 @Data
 public class PolicySet implements PolicyModel {
 
-    private String name = EMPTY;
+    private String title = EMPTY;
     private String description = EMPTY;
 
     private Target target = (nil) -> false;
@@ -30,7 +30,7 @@ public class PolicySet implements PolicyModel {
     private Collection<Advice> advices = emptyList();
 
     @Override
-    public Collection<? extends BaseModel> getChild() {
+    public Collection<? extends ObjectModel> getChild() {
         return policies;
     }
 }

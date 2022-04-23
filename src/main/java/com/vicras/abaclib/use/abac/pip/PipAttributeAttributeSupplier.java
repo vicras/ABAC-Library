@@ -10,7 +10,7 @@ import static com.vicras.abaclib.use.model.Action.VIEW_USERS;
 import static java.util.stream.Collectors.toList;
 
 import com.vicras.abaclib.engine.model.attribute.Attribute;
-import com.vicras.abaclib.engine.model.attribute.provider.AttributeWithContextProvider;
+import com.vicras.abaclib.engine.model.attribute.provider.ContextAttributeSupplier;
 import com.vicras.abaclib.engine.model.context.ExecutionContext;
 import com.vicras.abaclib.use.abac.domain.attribute.UseAttributes;
 import com.vicras.abaclib.use.model.Action;
@@ -32,7 +32,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class PipAttributeProvider implements AttributeWithContextProvider {
+public class PipAttributeAttributeSupplier implements ContextAttributeSupplier {
 
     private final UseAttributes attr;
     private final UserService userService;
@@ -119,6 +119,4 @@ public class PipAttributeProvider implements AttributeWithContextProvider {
                 .map(Principal::getName)
                 .map(userService::findUserByLogin);
     }
-
-
 }

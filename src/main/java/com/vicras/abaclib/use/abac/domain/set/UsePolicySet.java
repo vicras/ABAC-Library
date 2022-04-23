@@ -1,6 +1,6 @@
 package com.vicras.abaclib.use.abac.domain.set;
 
-import com.vicras.abaclib.engine.model.combinator.impl.IfOneAllow;
+import com.vicras.abaclib.engine.model.combinator.impl.AllowIfOneAllows;
 import com.vicras.abaclib.engine.model.condition.Target;
 import com.vicras.abaclib.engine.model.effect.impl.Advice;
 import com.vicras.abaclib.engine.model.main.PolicyModel;
@@ -58,7 +58,7 @@ public class UsePolicySet {
         policySet.setTarget(docAction);
         policySet.setPolicies(policies);
         policySet.setAdvices(advices);
-        policySet.setCombinationRule(new IfOneAllow());
+        policySet.setCombinationRule(new AllowIfOneAllows());
         return policySet;
     }
 }
