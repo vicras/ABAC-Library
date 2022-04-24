@@ -13,6 +13,7 @@ import lombok.Data;
 import java.util.Collection;
 
 @Data
+
 @AllArgsConstructor(staticName = "of")
 public class BaseDecisionPointResult implements DecisionPointResult {
     private CalculationResult finalCalculationResult;

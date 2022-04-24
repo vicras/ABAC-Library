@@ -10,7 +10,6 @@ import com.vicras.abaclib.engine.pdp.model.DecisionPointResult;
 import com.vicras.abaclib.engine.pep.decision.DecisionMaker;
 import com.vicras.abaclib.engine.pep.model.PEPResult;
 import com.vicras.abaclib.engine.pep.strategy.PDPResultConversionPolicy;
-import com.vicras.abaclib.use.model.Action;
 import io.vavr.collection.Stream;
 import io.vavr.control.Try;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collection;
 import java.util.function.Consumer;
-import java.util.function.Function;
-
 import javax.annotation.PostConstruct;
 
 import org.springframework.stereotype.Component;
@@ -32,7 +29,7 @@ public class DecisionMakerImpl implements DecisionMaker {
     private final PDPResultConversionPolicy resultConversionPolicy;
 
     @PostConstruct
-    private void logResultConversionPolicy(){
+    private void logResultConversionPolicy() {
         log.info("Strategy PEP result conversion {}", resultConversionPolicy.getClass());
     }
 
@@ -43,7 +40,9 @@ public class DecisionMakerImpl implements DecisionMaker {
 
         withErrorsDuringExecution(advices, failDuringExecution("Advices"));
 
-        var withFailures = withErrorsDuringExecution(obligations, failDuringExecution("Obligation"));
+        var withFailures = withErrorsDuringExecution(
+                obligations,
+                failDuringExecution("Obligation"));
         var pepResult = resultConversionPolicy.interpreterResult(pdpResult.getFinalCalculationResult());
         return considerMistake(pepResult, withFailures);
     }

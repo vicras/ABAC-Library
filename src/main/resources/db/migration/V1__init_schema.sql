@@ -9,6 +9,7 @@ CREATE TABLE common_user
     login      VARCHAR(255),
     password   VARCHAR(255),
     position   VARCHAR(255),
+    department VARCHAR(255),
     CONSTRAINT pk_common_user PRIMARY KEY (id)
 );
 
@@ -19,6 +20,7 @@ CREATE TABLE document
     updated_at TIMESTAMP with time zone,
     title      VARCHAR(255),
     text       VARCHAR(255),
+    approved   BOOLEAN,
     creator_id BIGINT,
     CONSTRAINT pk_document PRIMARY KEY (id)
 );

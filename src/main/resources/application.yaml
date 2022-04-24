@@ -28,3 +28,7 @@ token:
   secret: ${"secret":AUTH_SECRET}
   expire:
     minutes: 60
+
+logging:
+  level:
+    com.vicras.abaclib: debug
